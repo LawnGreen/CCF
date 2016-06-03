@@ -21,7 +21,7 @@ If not, see <http://www.gnu.org/licenses/>.
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>CCF  Rev.1.3.0</title>
+<title>CCF  1.3.1</title>
 
 <style type="text/css">  
 input[type="button"],input[type="submit"] {
@@ -33,28 +33,52 @@ input[type="button"],input[type="submit"] {
 </style>
 
 <audio id="audio-start" preload="auto">
+<source src="http://lawngreen.github.io/CCF/bird10.ogg" type="audio/ogg">
 <source src="http://lawngreen.github.io/CCF/bird10.mp3" type="audio/mp3">
 </audio>
 <audio id="audio-stop" preload="auto">
+<source src="http://lawngreen.github.io/CCF/corvus-macrorhynchos-cry1.ogg" type="audio/ogg">
 <source src="http://lawngreen.github.io/CCF/corvus-macrorhynchos-cry1.mp3" type="audio/mp3">
 </audio>
 
 <form name="ctrl">
-<input type="button" id="button-reset" name="button-reset" value="RESET" onClick="freset()" style="width:16%; height:75px; font-size:14px; display:inline; text-align:center; color:#fff; background-color:#8FBC8F"/>
-<input type="button" id="button-cc" name="button-cc" value="CHEST COMPRESSION" onClick="ftoggle()" style="width:65%; height:75px; font-size:14px; display:inline; text-align:center; color:#fff; background-color:#8FBC8F"/>
-<input type="button" id="button-cpr" name="button-cpr" value="CPR" onClick="foncpr()" style="width:16%; height:75px; font-size:14px; display:inline; text-align:center; color:#fff; background-color:#8FBC8F"/>
+<input type="button" id="button-reset" name="button-reset" value="RESET" onClick="freset()" style="height:75px; font-size:14px; display:inline; text-align:center; color:#fff; background-color:#8FBC8F"/>
+<input type="button" id="button-cc" name="button-cc" value="CHEST COMPRESSION" onClick="ftoggle()" style="height:75px; font-size:14px; display:inline; text-align:center; color:#fff; background-color:#8FBC8F"/>
+<input type="button" id="button-cpr" name="button-cpr" value="CPR" onClick="foncpr()" style="height:75px; font-size:14px; display:inline; text-align:center; color:#fff; background-color:#8FBC8F"/>
 </form>
 </head>
 <body>
 
 <form name="ccf">
-	<span style="color:#000000; font-size:152px; font-family:monospace">
+	<span style="color:#000000; font-size:24px; font-family:monospace">
 	<div id="time_cpr">cpr</div>
 	<div id="time_cc">cc</div>
 	</span>
-	<span style="color:#228B22; font-size:304px; font-family:monospace">
+	<span style="color:#228B22; font-size:24px; font-family:monospace">
 	<div id="rate">rate</div>
 	</span>
+
+	<p>
+	<input type="button" id="log-shock" name="log-shock" value="Shock" onClick="log_als('Shock')" style="height:75px; font-size:14px; display:inline; text-align:center; color:#fff; background-color:#8FBC8F"/>
+	<input type="button" id="log-pa" name="log-pa" value="Primary Assess" onClick="log_als('Primary Assess')" style="height:75px; font-size:14px; display:inline; text-align:center; color:#fff; background-color:#8FBC8F"/>
+	<input type="button" id="log-sa" name="log-sa" value="Secondary Assess" onClick="log_als('Secondary Assess')" style="height:75px; font-size:14px; display:inline; text-align:center; color:#fff; background-color:#8FBC8F"/>
+	<input type="button" id="log-q" name="log-q" value="Quality of CPR" onClick="log_als('Quality of CPR')" style="height:75px; font-size:14px; display:inline; text-align:center; color:#fff; background-color:#8FBC8F"/>
+	</p>
+
+	<p>
+	<input type="button" id="log-vf" name="log-vf" value="VF" onClick="log_als('VF')" style="height:75px; font-size:14px; display:inline; text-align:center; color:#fff; background-color:#8FBC8F"/>
+	<input type="button" id="log-vt" name="log-vt" value="pulseless VT" onClick="log_als('pulseless VT')" style="height:75px; font-size:14px; display:inline; text-align:center; color:#fff; background-color:#8FBC8F"/>
+	<input type="button" id="log-pea" name="log-pea" value="PEA" onClick="log_als('PEA')" style="height:75px; font-size:14px; display:inline; text-align:center; color:#fff; background-color:#8FBC8F"/>
+	<input type="button" id="log-asys" name="log-asys" value="Asystole" onClick="log_als('Asystole')" style="height:75px; font-size:14px; display:inline; text-align:center; color:#fff; background-color:#8FBC8F"/>
+	</p>
+
+	<p>
+	<input type="button" id="log-iv" name="log-iv" value="IV route" onClick="log_als('IV route')" style="height:75px; font-size:14px; display:inline; text-align:center; color:#fff; background-color:#8FBC8F"/>
+	<input type="button" id="log-ad" name="log-ad" value="Adrenaline" onClick="log_als('Adrenaline')" style="height:75px; font-size:14px; display:inline; text-align:center; color:#fff; background-color:#8FBC8F"/>
+	<input type="button" id="log-aad" name="log-aad" value="Anti arrhythmic" onClick="log_als('Anti arrhythmic')" style="height:75px; font-size:14px; display:inline; text-align:center; color:#fff; background-color:#8FBC8F"/>
+	<input type="button" id="log-airway" name="log-airway" value="Advanced airway" onClick="log_als('Advanced airway')" style="height:75px; font-size:14px; display:inline; text-align:center; color:#fff; background-color:#8FBC8F"/>
+	</p>
+
 	<span style="color:#000000; font-size:24px; font-family:monospace">
 	<div id="log_interruption"></div>
 	</span>
@@ -159,12 +183,43 @@ function ffit() {
 	document.getElementById('time_cc').style.fontSize = Math.floor(x) + 'px';
 	x = ww * 0.35;
 	document.getElementById('rate').style.fontSize = Math.floor(x) + 'px';
-	x = ww * 0.07;
+	x = ww * 0.04;
 	document.getElementById('log_interruption').style.fontSize = Math.floor(x) + 'px';
 
-	document.getElementById("button-reset").style.width = "16vw";
-	document.getElementById("button-cc").style.width = "60vw";
-	document.getElementById("button-cpr").style.width = "16vw";
+	x = ww * 0.16;
+	document.getElementById("button-reset").style.width = Math.floor(x) + 'px';
+	x = ww * 0.60;
+	document.getElementById("button-cc").style.width = Math.floor(x) + 'px';
+	x = ww * 0.16;
+	document.getElementById("button-cpr").style.width = Math.floor(x) + 'px';
+
+	x = ww * 0.23;
+	document.getElementById("log-shock").style.width = Math.floor(x) + 'px';
+	x = ww * 0.23;
+	document.getElementById("log-pa").style.width = Math.floor(x) + 'px';
+	x = ww * 0.23;
+	document.getElementById("log-sa").style.width = Math.floor(x) + 'px';
+	x = ww * 0.23;
+	document.getElementById("log-q").style.width = Math.floor(x) + 'px';
+
+	x = ww * 0.23;
+	document.getElementById("log-vf").style.width = Math.floor(x) + 'px';
+	x = ww * 0.23;
+	document.getElementById("log-vt").style.width = Math.floor(x) + 'px';
+	x = ww * 0.23;
+	document.getElementById("log-pea").style.width = Math.floor(x) + 'px';
+	x = ww * 0.23;
+	document.getElementById("log-asys").style.width = Math.floor(x) + 'px';
+
+	x = ww * 0.23;
+	document.getElementById("log-iv").style.width = Math.floor(x) + 'px';
+	x = ww * 0.23;
+	document.getElementById("log-ad").style.width = Math.floor(x) + 'px';
+	x = ww * 0.23;
+	document.getElementById("log-aad").style.width = Math.floor(x) + 'px';
+	x = ww * 0.23;
+	document.getElementById("log-airway").style.width = Math.floor(x) + 'px';
+
 }
 
 function sec_to_hhmmss(n) {
@@ -180,6 +235,15 @@ function sec_to_hhmmss(n) {
 	n = n - ss;
 	ms = Math.floor(n / 0.1);
 	n = (hh < 10 ? "0" + hh : hh) + ":" + (mm < 10 ? "0" + mm : mm) + ":" + (ss < 10 ? "0" + ss : ss) + "." + ms;
+	return n;
+}
+function log_time() {
+	// ログ表示用にローカル時間の取得
+	var now = new Date();
+	var hh = now.getHours();
+	var mm = now.getMinutes();
+	var ss = now.getSeconds();
+	n = (hh < 10 ? "0" + hh : hh) + ":" + (mm < 10 ? "0" + mm : mm) + ":" + (ss < 10 ? "0" + ss : ss);
 	return n;
 }
 function fcpr() {
@@ -258,8 +322,16 @@ function ftoggle() {
 	}
 }
 function flog(n) {
+	// 圧迫中断時間のログ
 	number_interruption = number_interruption + 1;
-	text_interruption = text_interruption + "</br>" + "[" + number_interruption + "] " + sec_to_hhmmss((n / 1000));
+	text_interruption = text_interruption + "</br>" + log_time(n) + "[Interruption " + number_interruption + "] " + sec_to_hhmmss((n / 1000));
+	var logElement = document.getElementById("log_interruption");
+	logElement.innerHTML = text_interruption;
+	return n;
+}
+function log_als(n) {
+	// 心電図チェックや薬剤投与のログ
+	text_interruption = text_interruption + "</br>" + log_time(n) + "[" + n + "] " ;
 	var logElement = document.getElementById("log_interruption");
 	logElement.innerHTML = text_interruption;
 	return n;
@@ -299,7 +371,10 @@ function freset() {
 	fstop();
 
 }
-
+// 1.3.1.0の変更点(2016-06-04)
+// ボタンのサイズ最適化方法を改善
+// ALSログの記録機能を追加
+// oggフォーマットの効果音を追加
 </script>
 </body>
 </html>
