@@ -40,6 +40,10 @@ input[type="button"],input[type="submit"] {
 <source src="http://lawngreen.github.io/CCF/corvus-macrorhynchos-cry1.ogg" type="audio/ogg">
 <source src="http://lawngreen.github.io/CCF/corvus-macrorhynchos-cry1.mp3" type="audio/mp3">
 </audio>
+<audio id="audio-log" preload="auto">
+<source src="http://lawngreen.github.io/CCF/cat-cry2.ogg" type="audio/ogg">
+<source src="http://lawngreen.github.io/CCF/cat-cry2.mp3" type="audio/mp3">
+</audio>
 
 <form name="ctrl">
 <input type="button" id="button-reset" name="button-reset" value="RESET" onClick="freset()" style="height:75px; font-size:14px; display:inline; text-align:center; color:#fff; background-color:#8FBC8F"/>
@@ -334,6 +338,7 @@ function log_als(n) {
 	text_interruption = text_interruption + "</br>" + log_time(n) + "[" + n + "] " ;
 	var logElement = document.getElementById("log_interruption");
 	logElement.innerHTML = text_interruption;
+	document.getElementById("audio-log").play();
 	return n;
 }
 function foncpr() {
